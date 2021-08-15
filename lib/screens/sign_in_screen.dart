@@ -3,6 +3,7 @@ import 'dart:convert';
 // import 'package:assesment_app/screens/bottom_tabs_screen.dart';
 // import 'package:assesment_app/services/api_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:z_todays_tiffin/screens/support_screen.dart';
 
 class SignInSceen extends StatelessWidget {
   TextEditingController passwordController = new TextEditingController();
@@ -32,7 +33,10 @@ class SignInSceen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: Text(
+          'Sign In',
+          style: TextStyle(fontFamily: 'Eraser'),
+        ),
         backgroundColor: Color(0xff007EF4),
       ),
       body: SingleChildScrollView(
@@ -72,7 +76,6 @@ class SignInSceen extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-
                   TextFormField(
                     // validator: (val) {
                     //   if (val.length == 10) {
@@ -114,34 +117,46 @@ class SignInSceen extends StatelessWidget {
                       child: Center(
                         child: Text(
                           'Sign In',
-                          style: TextStyle(fontSize: 20, color: Colors.white),
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   height: 15,
-                  // ),
-                  // InkWell(
-                  //   onTap: () {
-                  //     //TODO Submit Data & Sign Up
-                  //   },
-                  //   child: Container(
-                  //     width: MediaQuery.of(context).size.width * 0.9,
-                  //     height: MediaQuery.of(context).size.height * 0.075,
-                  //     decoration: BoxDecoration(
-                  //       gradient: LinearGradient(
-                  //           colors: [Colors.white, Colors.grey[300]]),
-                  //       borderRadius: BorderRadius.circular(25),
-                  //     ),
-                  //     child: Center(
-                  //       child: Text(
-                  //         'Sign Up',
-                  //         style: TextStyle(fontSize: 20, color: Colors.black),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      //TODO Submit Data & Sign Up
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              const SupportScreen(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.075,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'NEED HELP',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

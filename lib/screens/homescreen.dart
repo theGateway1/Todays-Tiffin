@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:z_todays_tiffin/screens/support_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -30,6 +31,19 @@ Widget textifyMenuItem(String text) {
   );
 }
 
+Widget normalScreenText(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+      color: Colors.black,
+      fontSize: 18,
+      fontFamily: 'Eraser',
+    ),
+    overflow: TextOverflow.clip,
+    softWrap: false,
+  );
+}
+
 Widget menuItem(String text, BuildContext context) {
   return Container(
     child: Row(
@@ -51,6 +65,12 @@ Widget menuItem(String text, BuildContext context) {
   );
 }
 
+Widget returnSizedBox(BuildContext context) {
+  return SizedBox(
+    height: MediaQuery.of(context).size.height * 0.025,
+  );
+}
+
 Widget dividerHere() {
   return Text(
     '──────────────────────────────────────────────────',
@@ -59,6 +79,19 @@ Widget dividerHere() {
     overflow: TextOverflow.clip,
     softWrap: false,
   );
+}
+
+MaterialStateProperty<EdgeInsetsGeometry> rpadding(BuildContext context) {
+  return MaterialStateProperty.resolveWith((states) => EdgeInsets.fromLTRB(
+      MediaQuery.of(context).size.width * 0.04,
+      20,
+      MediaQuery.of(context).size.width * 0.04,
+      20));
+}
+
+MaterialStateProperty<Size> rsize(BuildContext context) {
+  return MaterialStateProperty.resolveWith(
+      (states) => Size.fromWidth(MediaQuery.of(context).size.width * 0.86));
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -76,14 +109,48 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text(
+          'Home',
+          style: TextStyle(fontSize: 24, fontFamily: 'Eraser'),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const SupportScreen(),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.support,
+              size: 27,
+            ),
+            padding: EdgeInsets.only(right: 20),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.logout,
+              size: 27,
+            ),
+            padding: EdgeInsets.only(right: 10),
+          ),
+        ],
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+        padding: EdgeInsets.fromLTRB(
+            6, MediaQuery.of(context).size.height * 0.01, 6, 0),
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.42,
+          height: MediaQuery.of(context).size.height * 0.91,
+          padding: EdgeInsets.fromLTRB(
+            MediaQuery.of(context).size.width * 0.04,
+            MediaQuery.of(context).size.height * 0.008,
+            MediaQuery.of(context).size.width * 0.04,
+            0,
+          ),
           decoration: BoxDecoration(
-            // border: Border.all(color: Colors.grey, width: 2),
+            border: Border.all(color: Colors.grey, width: 2),
             borderRadius: BorderRadius.circular(15),
             shape: BoxShape.rectangle,
           ),
@@ -91,7 +158,11 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Center(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 15, 0, 20),
+                  padding: EdgeInsets.fromLTRB(
+                      0,
+                      MediaQuery.of(context).size.height * 0.02,
+                      0,
+                      MediaQuery.of(context).size.height * 0.02),
                   child: textifyHeading('Today\'s Menu'),
                 ),
               ),
@@ -100,13 +171,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 // color: Colors.black,
                 height: MediaQuery.of(context).size.height * 0.32,
                 decoration: BoxDecoration(
-                    // border: Border.all(color: Colors.grey, width: 2),
-                    borderRadius: BorderRadius.circular(10),
-                    shape: BoxShape.rectangle,
-                    color: Colors.black),
+                  // border: Border.all(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(10),
+                  shape: BoxShape.rectangle,
+                  color: Colors.black,
+                ),
                 child: ListView(
                   scrollDirection: Axis.vertical,
-                  padding: EdgeInsets.fromLTRB(20, 20, 15, 15),
+                  padding: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).size.width * 0.04,
+                      MediaQuery.of(context).size.height * 0.02,
+                      MediaQuery.of(context).size.width * 0.04,
+                      MediaQuery.of(context).size.height * 0.015),
                   children: [
                     //Menu Items Here
                     menuItem('Rajma', context),
@@ -116,7 +192,88 @@ class _HomeScreenState extends State<HomeScreen> {
                     menuItem('Raita', context),
                   ],
                 ),
-              )
+              ),
+              returnSizedBox(context),
+              Container(
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width * 0.04,
+                    MediaQuery.of(context).size.height * 0.02,
+                    0,
+                    MediaQuery.of(context).size.height * 0.02),
+                decoration: BoxDecoration(
+                  // border: Border.all(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(10),
+                  shape: BoxShape.rectangle,
+                  color: Colors.blue[200],
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Last Updated On: 10-08-21 10:30 AM',
+                          style: TextStyle(
+                              fontSize: 21, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'ETA: 01:30 PM',
+                          style: TextStyle(
+                              fontSize: 21, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              returnSizedBox(context),
+              ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Colors.red[800]),
+                  padding: rpadding(context),
+                  fixedSize: rsize(context),
+                ),
+                child: Text(
+                  'Request Cancellation',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+              returnSizedBox(context),
+              ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Colors.green[900]),
+                  padding: rpadding(context),
+                  fixedSize: rsize(context),
+                ),
+                child: Text(
+                  'Request Changed Timing',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+              returnSizedBox(context),
+              ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Colors.orange[600]),
+                  padding: rpadding(context),
+                  fixedSize: rsize(context),
+                ),
+                child: Text(
+                  'Request Clear Dues',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
             ],
           ),
         ),
