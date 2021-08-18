@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:z_todays_tiffin/constants/strings.dart';
+import 'package:z_todays_tiffin/models/menu_item.dart';
 import 'package:z_todays_tiffin/screens/support_screen.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -95,14 +100,26 @@ MaterialStateProperty<Size> rsize(BuildContext context) {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Menu> menus = [];
   @override
   void initState() {
     // TODO: implement initState
+    _retreiveMenus();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     super.initState();
+  }
+
+  void _retreiveMenus() async {
+    menus = [];
+    var response = await http.get(Uri.parse(BASE_URL));
+    List res = json.decode(response.body);
+    res.forEach((element) {
+      menus.add(Menu.fromMap(element));
+    });
+    setState(() {});
   }
 
   @override
@@ -171,27 +188,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 // color: Colors.black,
                 height: MediaQuery.of(context).size.height * 0.32,
                 decoration: BoxDecoration(
-                  // border: Border.all(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(10),
                   shape: BoxShape.rectangle,
                   color: Colors.black,
                 ),
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  padding: EdgeInsets.fromLTRB(
-                      MediaQuery.of(context).size.width * 0.04,
-                      MediaQuery.of(context).size.height * 0.02,
-                      MediaQuery.of(context).size.width * 0.04,
-                      MediaQuery.of(context).size.height * 0.015),
-                  children: [
-                    //Menu Items Here
-                    menuItem('Rajma', context),
-                    menuItem('Chawal', context),
-                    menuItem('Bhindi ki Bhujia', context),
-                    menuItem('Roti', context),
-                    menuItem('Raita', context),
-                  ],
-                ),
+                child: ListView.builder(
+                    padding: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.width * 0.04,
+                        MediaQuery.of(context).size.height * 0.02,
+                        MediaQuery.of(context).size.width * 0.04,
+                        MediaQuery.of(context).size.height * 0.015),
+                    itemCount: menus.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return menuItem(menus[index].note, context);
+                    }),
               ),
               returnSizedBox(context),
               Container(
