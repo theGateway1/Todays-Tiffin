@@ -50,7 +50,7 @@ Widget normalScreenText(String text) {
 }
 
 Widget menuItem(String text, BuildContext context) {
-  return text != "null"
+  return text != "null" && text.isNotEmpty
       ? Container(
           child: Row(
             children: [
@@ -235,9 +235,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       children: [
                         Text(
-                          menus.first.updated,
+                          "Updated At: ${menus.first.updated}",
                           style: TextStyle(
-                              fontSize: 21, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -249,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           'ETA: 01:30 PM',
                           style: TextStyle(
-                              fontSize: 21, fontWeight: FontWeight.bold),
+                              fontSize: 17, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
