@@ -101,6 +101,7 @@ MaterialStateProperty<Size> rsize(BuildContext context) {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Menu> menus = [];
+  String updated = "00:00";
   @override
   void initState() {
     // TODO: implement initState
@@ -114,8 +115,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _retreiveMenus() async {
     menus = [];
+    updated = "00:00";
     var response = await http.get(Uri.parse(BASE_URL));
     List res = json.decode(response.body);
+    print(res.toString());
     res.forEach((element) {
       menus.add(Menu.fromMap(element));
     });
@@ -221,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       children: [
                         Text(
-                          'Last Updated On: 10-08-21 10:30 AM',
+                          menus.last.updated,
                           style: TextStyle(
                               fontSize: 21, fontWeight: FontWeight.bold),
                         ),
