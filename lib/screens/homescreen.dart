@@ -50,24 +50,26 @@ Widget normalScreenText(String text) {
 }
 
 Widget menuItem(String text, BuildContext context) {
-  return Container(
-    child: Row(
-      children: [
-        Icon(
-          Icons.circle_outlined,
-          color: Colors.white,
-          size: 24,
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.059,
-        ),
-        textifyMenuItem(text),
-        SizedBox(
-          height: 45,
-        ),
-      ],
-    ),
-  );
+  return text != "null"
+      ? Container(
+          child: Row(
+            children: [
+              Icon(
+                Icons.circle_outlined,
+                color: Colors.white,
+                size: 24,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.059,
+              ),
+              textifyMenuItem(text),
+              SizedBox(
+                height: 45,
+              ),
+            ],
+          ),
+        )
+      : Container();
 }
 
 Widget returnSizedBox(BuildContext context) {
@@ -195,16 +197,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   shape: BoxShape.rectangle,
                   color: Colors.black,
                 ),
-                child: ListView.builder(
-                    padding: EdgeInsets.fromLTRB(
-                        MediaQuery.of(context).size.width * 0.04,
-                        MediaQuery.of(context).size.height * 0.02,
-                        MediaQuery.of(context).size.width * 0.04,
-                        MediaQuery.of(context).size.height * 0.015),
-                    itemCount: menus.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return menuItem(menus[index].note, context);
-                    }),
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  padding: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).size.width * 0.04,
+                      MediaQuery.of(context).size.height * 0.02,
+                      MediaQuery.of(context).size.width * 0.04,
+                      MediaQuery.of(context).size.height * 0.015),
+                  children: [
+                    //Menu Items Here
+                    menuItem(menus.first.i1, context),
+                    menuItem(menus.first.i2, context),
+                    menuItem(menus.first.i3, context),
+                    menuItem(menus.first.i4, context),
+                    menuItem(menus.first.i5, context),
+                    menuItem(menus.first.i6, context),
+                    menuItem(menus.first.i7, context),
+                    menuItem(menus.first.i8, context),
+                  ],
+                ),
               ),
               returnSizedBox(context),
               Container(
@@ -224,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       children: [
                         Text(
-                          menus.last.updated,
+                          menus.first.updated,
                           style: TextStyle(
                               fontSize: 21, fontWeight: FontWeight.bold),
                         ),
