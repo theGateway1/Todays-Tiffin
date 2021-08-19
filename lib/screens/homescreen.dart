@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -108,6 +109,15 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     _retreiveMenus();
+    FirebaseMessaging.onMessage.listen((event) {
+      print(event);
+      return;
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      print(event);
+      return;
+    });
+    FirebaseMessaging.instance.subscribeToTopic('chat');
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setPreferredOrientations(
