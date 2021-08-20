@@ -12,6 +12,12 @@ class _SignInState extends State<SignInScreen> {
   TextEditingController _numberController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,12 +103,19 @@ class _SignInState extends State<SignInScreen> {
                             Authorize()
                                 .signinwithPhoneEmail(_numberController.text,
                                     _passwordController.text)
-                                .then((value) => Navigator.of(context)
-                                    .pushAndRemoveUntil(
-                                        MaterialPageRoute<void>(
-                                            builder: (BuildContext context) =>
-                                                const HomeScreen()),
-                                        (Route<dynamic> route) => false));
+                                .then((value) {
+                              if (value == "success") {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute<void>(
+                                        builder: (BuildContext context) =>
+                                            const HomeScreen()),
+                                    (Route<dynamic> route) => false);
+                              } else if (value == "user-not-found") {
+                                showSnackbar(context, "Account Doesn\'t exist");
+                              } else {
+                                showSnackbar(context, "Wrong Credentials");
+                              }
+                            });
                           }
                         },
                         child: Ink(

@@ -108,6 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Menu> menus = [];
   String updated = "00:00";
   String finalEta = "No Info.";
+  String delayFactor = "00";
+  String amOrPm = "AM";
   @override
   void initState() {
     // TODO: implement initState
@@ -137,21 +139,20 @@ class _HomeScreenState extends State<HomeScreen> {
     res.forEach((element) {
       menus.add(Menu.fromMap(element));
     });
-
+    amOrPm = menus.first.updated.contains("AM") ? "AM" : "PM";
+    print(menus.first.updated.toString());
     finalEta = menus.first.eta;
     finalEta != "No. Info."
         ? await getEta(finalEta).then((value) => setState(() {}))
-        : setState(() {
-            print("EXECUTING THIS");
-          });
+        : setState(() {});
   }
 
-  Future<void> getEta(String finalEta) async {
-    double time = double.parse(finalEta);
-    String delayFactor = await otherServices().fetchDelayFactor();
-    double finalTime = double.parse(delayFactor) + time;
-    this.finalEta = finalTime.toString();
-    print('final Eta here: $finalEta');
+  Future<void> getEta(String etaHere) async {
+    // double time = double.parse(etaHere);
+    delayFactor = await otherServices().fetchDelayFactor();
+    // double finalTime = double.parse(delayFactor)  time;
+    // etaHere = finalTime.toString();
+    print("Time: $etaHere:$delayFactor");
   }
 
   @override
@@ -281,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           menus.first.eta.toString() != "No Info."
-                              ? 'ETA: $finalEta'
+                              ? 'ETA: $finalEta:$delayFactor $amOrPm'
                               : 'ETA: $finalEta',
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.bold),
