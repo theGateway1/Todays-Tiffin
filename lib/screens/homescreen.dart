@@ -107,6 +107,7 @@ MaterialStateProperty<Size> rsize(BuildContext context) {
 class _HomeScreenState extends State<HomeScreen> {
   List<Menu> menus = [];
   String updated = "00:00";
+  String finalEta = "No Info.";
   @override
   void initState() {
     // TODO: implement initState
@@ -136,7 +137,21 @@ class _HomeScreenState extends State<HomeScreen> {
     res.forEach((element) {
       menus.add(Menu.fromMap(element));
     });
-    setState(() {});
+
+    finalEta = menus.first.eta;
+    finalEta != "No. Info."
+        ? await getEta(finalEta).then((value) => setState(() {}))
+        : setState(() {
+            print("EXECUTING THIS");
+          });
+  }
+
+  Future<void> getEta(String finalEta) async {
+    double time = double.parse(finalEta);
+    String delayFactor = await otherServices().fetchDelayFactor();
+    double finalTime = double.parse(delayFactor) + time;
+    this.finalEta = finalTime.toString();
+    print('final Eta here: $finalEta');
   }
 
   @override
@@ -265,7 +280,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       children: [
                         Text(
-                          'ETA: 01:30 PM',
+                          menus.first.eta.toString() != "No Info."
+                              ? 'ETA: $finalEta'
+                              : 'ETA: $finalEta',
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.bold),
                         ),

@@ -43,7 +43,7 @@ class _SignInState extends State<SignInScreen> {
                             SizedBox(
                               height: 5,
                             ),
-                            Text("Welcome to your Virtual Notebook!"),
+                            Text("Sign In to access the features!"),
                             SizedBox(
                               height: 40,
                             ),

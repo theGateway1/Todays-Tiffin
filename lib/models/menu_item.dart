@@ -11,6 +11,7 @@ class Menu {
   String i7;
   String i8;
   String updated;
+  String eta;
   Menu({
     required this.id,
     required this.i1,
@@ -22,6 +23,7 @@ class Menu {
     required this.i7,
     required this.i8,
     required this.updated,
+    required this.eta,
   });
 
   Menu copyWith({
@@ -35,6 +37,7 @@ class Menu {
     String? i7,
     String? i8,
     String? updated,
+    String? eta,
   }) {
     return Menu(
       id: id ?? this.id,
@@ -47,6 +50,7 @@ class Menu {
       i7: i7 ?? this.i7,
       i8: i8 ?? this.i8,
       updated: updated ?? this.updated,
+      eta: eta ?? this.eta,
     );
   }
 
@@ -62,6 +66,7 @@ class Menu {
       'i7': i7,
       'i8': i8,
       'updated': updated,
+      'eta': eta,
     };
   }
 
@@ -77,6 +82,7 @@ class Menu {
       i7: map['i7'],
       i8: map['i8'],
       updated: map['updated'],
+      eta: map['eta'],
     );
   }
 
@@ -86,7 +92,7 @@ class Menu {
 
   @override
   String toString() {
-    return 'Menu(id: $id, i1: $i1, i2: $i2, i3: $i3, i4: $i4, i5: $i5, i6: $i6, i7: $i7, i8: $i8, updated: $updated)';
+    return 'Menu(id: $id, i1: $i1, i2: $i2, i3: $i3, i4: $i4, i5: $i5, i6: $i6, i7: $i7, i8: $i8, updated: $updated, eta: $eta)';
   }
 
   @override
@@ -103,7 +109,8 @@ class Menu {
         other.i6 == i6 &&
         other.i7 == i7 &&
         other.i8 == i8 &&
-        other.updated == updated;
+        other.updated == updated &&
+        other.eta == eta;
   }
 
   @override
@@ -117,6 +124,7 @@ class Menu {
         i6.hashCode ^
         i7.hashCode ^
         i8.hashCode ^
-        updated.hashCode;
+        updated.hashCode ^
+        eta.hashCode;
   }
 }
