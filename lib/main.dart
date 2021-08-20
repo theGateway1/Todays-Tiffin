@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:z_todays_tiffin/screens/homescreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:z_todays_tiffin/screens/sign_in_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: SignInScreen(),
     );
   }
 }

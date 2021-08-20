@@ -1,165 +1,163 @@
-import 'dart:convert';
-
-// import 'package:assesment_app/screens/bottom_tabs_screen.dart';
-// import 'package:assesment_app/services/api_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:z_todays_tiffin/screens/support_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:z_todays_tiffin/screens/homescreen.dart';
+import 'package:z_todays_tiffin/services/firebase_methods.dart';
 
-class SignInSceen extends StatelessWidget {
-  TextEditingController passwordController = new TextEditingController();
-  TextEditingController userController = new TextEditingController();
-  final formKey = GlobalKey<FormState>();
+class SignInScreen extends StatefulWidget {
+  _SignInState createState() => _SignInState();
+}
 
-  // signUserUp(BuildContext context) async {
-  //   if (formKey.currentState!.validate()) {
-  //     var completeToken = await API_manager()
-  //         .signIn(userController.text, passwordController.text);
-  //     print("TOKEN HERE: ${completeToken.toString()}");
-
-  //     if (completeToken.toString().length > 1) {
-  //       Navigator.of(context).pushAndRemoveUntil(
-  //         MaterialPageRoute<void>(
-  //             builder: (BuildContext context) => TabsScreen(completeToken)),
-  //         ModalRoute.withName('/'),
-  //       );
-  //     } else {
-  //       print(completeToken.toString());
-  //     }
-  //   }
-  // }
+class _SignInState extends State<SignInScreen> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController _numberController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: Text(
-          'Sign In',
-          style: TextStyle(fontFamily: 'Eraser'),
-        ),
-        backgroundColor: Color(0xff007EF4),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.87,
-          // decoration: BoxDecoration(border: Border.all(color: Colors.red)),
-          child: Container(
-            // decoration: BoxDecoration(border: Border.all(color: Colors.purple)),
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextFormField(
-                    style: TextStyle(color: Colors.white),
-                    controller: userController,
-                    // validator: (val) {
-                    //   if (val.length < 2) {
-                    //     return "Please enter your name";
-                    //   }
-                    //   return null;
-                    // },
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      labelStyle: TextStyle(fontSize: 16, color: Colors.white),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    // validator: (val) {
-                    //   if (val.length == 10) {
-                    //     return null;
-                    //   }
-                    //   return "Enter a valid phone number.";
-                    // },
-                    style: TextStyle(color: Colors.white),
-                    // keyboardType: TextInputType.number,
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      labelStyle: TextStyle(fontSize: 16, color: Colors.white),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 60,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      //TODO Submit Data & Sign In
-                      // signUserUp(context);
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: MediaQuery.of(context).size.height * 0.075,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xff007EF4), Color(0xff2A75BC)],
+      body: Padding(
+        padding: MediaQuery.of(context).padding,
+        child: Center(
+          child: Column(
+            children: [
+              Expanded(
+                  flex: 9,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(color: Colors.grey)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Sign In",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5!
+                                    .copyWith(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold)),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text("Welcome to your Virtual Notebook!"),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      controller: _numberController,
+                                      decoration: InputDecoration(
+                                        labelText: "Phone Number",
+                                      ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        // else if (value.length != 10) {
+                                        //   return "Enter a valid 10 digit Phone Number";
+                                        // }
+                                        return null;
+                                      },
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                    TextFormField(
+                                        controller: _passwordController,
+                                        decoration: InputDecoration(
+                                            labelText: "Password"),
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter password';
+                                          }
+                                          return null;
+                                        }),
+                                  ],
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
                         ),
-                        borderRadius: BorderRadius.circular(25),
                       ),
-                      child: Center(
-                        child: Text(
-                          'Sign In',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                    ),
+                  )),
+              Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      FlatButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            Authorize()
+                                .signinwithPhoneEmail(_numberController.text,
+                                    _passwordController.text)
+                                .then((value) => Navigator.of(context)
+                                    .pushAndRemoveUntil(
+                                        MaterialPageRoute<void>(
+                                            builder: (BuildContext context) =>
+                                                const HomeScreen()),
+                                        (Route<dynamic> route) => false));
+                          }
+                        },
+                        child: Ink(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: <Color>[
+                                  Color(0xFF5DA5ED),
+                                  Color(0xFF0984FD),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 1.5),
+                                  blurRadius: 1.5,
+                                ),
+                              ]),
+                          child: SizedBox(
+                            width: 240,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                                    child: Text(
+                                      "Sign In",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                    child: Icon(
+                                      Icons.arrow_forward,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      //TODO Submit Data & Sign Up
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              const SupportScreen(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: MediaQuery.of(context).size.height * 0.075,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'NEED HELP',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                    ],
+                  ))
+            ],
           ),
         ),
       ),
