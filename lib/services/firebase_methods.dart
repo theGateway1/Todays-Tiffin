@@ -9,16 +9,17 @@ class Authorize {
     try {
       auth.UserCredential userCredential = await auth.FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      print("success");
+      return "success";
     } on auth.FirebaseAuthException catch (e) {
       print(e.code);
-      if (e.code == 'user-not-found') {
+      if (e.code == 'user-not-found' || e.code == 'invalid-email') {
         return "user-not-found";
       } else if (e.code == 'wrong-password') {
         return "wrong-password";
       }
     }
-    print("success");
-    return "success";
+    return "error";
   }
 
   Future signOut() async {

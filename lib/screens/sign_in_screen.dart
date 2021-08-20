@@ -101,7 +101,8 @@ class _SignInState extends State<SignInScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             Authorize()
-                                .signinwithPhoneEmail(_numberController.text,
+                                .signinwithPhoneEmail(
+                                    _numberController.text.trim(),
                                     _passwordController.text)
                                 .then((value) {
                               if (value == "success") {
