@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:z_todays_tiffin/Utilities/utilities.dart';
 import 'package:z_todays_tiffin/screens/homescreen.dart';
 import 'package:z_todays_tiffin/services/firebase_methods.dart';
 
@@ -11,12 +14,6 @@ class _SignInState extends State<SignInScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _numberController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-
-  showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,23 +95,20 @@ class _SignInState extends State<SignInScreen> {
                   child: Column(
                     children: [
                       FlatButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             Authorize()
                                 .signinwithPhoneEmail(
-                                    _numberController.text.trim(),
-                                    _passwordController.text)
-                                .then((value) {
+                              _numberController.text.trim(),
+                              _passwordController.text.trim(),
+                            )
+                                .then((value) async {
                               if (value == "success") {
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute<void>(
                                         builder: (BuildContext context) =>
                                             const HomeScreen()),
                                     (Route<dynamic> route) => false);
-                              } else if (value == "user-not-found") {
-                                showSnackbar(context, "Account Doesn\'t exist");
-                              } else {
-                                showSnackbar(context, "Wrong Credentials");
                               }
                             });
                           }

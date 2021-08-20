@@ -27,6 +27,7 @@ dependencies:
   firebase_messaging: ^10.0.5
   flutter:
     sdk: flutter
+  fluttertoast: ^8.0.8
   http: ^0.13.3
   url_launcher: ^6.0.9
 
