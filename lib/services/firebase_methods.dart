@@ -24,4 +24,10 @@ class Authorize {
       }
     }
   }
+
+  Future signOut() async {
+    await auth.FirebaseAuth.instance.signOut();
+    // _user = null;
+    return Future.delayed(Duration.zero);
+  }
 }

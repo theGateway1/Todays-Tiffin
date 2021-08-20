@@ -6,8 +6,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:z_todays_tiffin/constants/strings.dart';
 import 'package:z_todays_tiffin/models/menu_item.dart';
+import 'package:z_todays_tiffin/screens/sign_in_screen.dart';
 import 'package:z_todays_tiffin/screens/support_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:z_todays_tiffin/services/firebase_methods.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -161,7 +163,13 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.only(right: 20),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Authorize().signOut().then((value) => Navigator.of(context)
+                  .pushAndRemoveUntil(
+                      MaterialPageRoute<void>(
+                          builder: (BuildContext context) => SignInScreen()),
+                      (Route<dynamic> route) => false));
+            },
             icon: Icon(
               Icons.logout,
               size: 27,
