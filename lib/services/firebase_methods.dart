@@ -41,7 +41,7 @@ class Authorize {
   }
 }
 
-class otherServices {
+class OtherServices {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future<QueryDocumentSnapshot> findUserDetails(String usid) async {
     QuerySnapshot docref = await _firestore
@@ -52,12 +52,77 @@ class otherServices {
     return doc;
   }
 
+  Future<QueryDocumentSnapshot> findUserRequest(String usid) async {
+    QuerySnapshot docref = await _firestore
+        .collection("requests")
+        .where('uid', isEqualTo: usid)
+        .get();
+    QueryDocumentSnapshot doc = docref.docs[0];
+    return doc;
+  }
+
   Future<String> fetchDelayFactor() async {
     String usid = FirebaseAuth.instance.currentUser!.uid.toString();
-    // print(usid.toString());
     QueryDocumentSnapshot doc = await findUserDetails(usid);
     String res = doc["delayFactor"];
-    // print("Delay Factor: $res");
     return res;
+  }
+
+  Future<String> requestCancellation() async {
+    try {
+      print("RUNS");
+      Map<String, String> data = {
+        "cancellation": "true",
+      };
+      String usid = FirebaseAuth.instance.currentUser!.uid.toString();
+      QueryDocumentSnapshot doc = await findUserRequest(usid);
+      if (doc["cancellation"] != "false") {
+        return "requested";
+      } else {
+        await _firestore.collection("requests").doc(usid).update(data);
+        return "success";
+      }
+    } catch (e) {
+      print(e.toString());
+      return "error";
+    }
+  }
+
+  Future<String> requestChangedTiming(String time) async {
+    try {
+      Map<String, String> data = {
+        "changedTime": time,
+      };
+      String usid = FirebaseAuth.instance.currentUser!.uid.toString();
+      QueryDocumentSnapshot doc = await findUserRequest(usid);
+      if (doc["changedTime"] != "false") {
+        return "requested";
+      } else {
+        await _firestore.collection("requests").doc(usid).update(data);
+        return "success";
+      }
+    } catch (e) {
+      print(e.toString());
+      return "error";
+    }
+  }
+
+  Future<String> requestClearDues() async {
+    try {
+      Map<String, String> data = {
+        "clearDues": "true",
+      };
+      String usid = FirebaseAuth.instance.currentUser!.uid.toString();
+      QueryDocumentSnapshot doc = await findUserRequest(usid);
+      if (doc["clearDues"] != "false") {
+        return "requested";
+      } else {
+        await _firestore.collection("requests").doc(usid).update(data);
+        return "success";
+      }
+    } catch (e) {
+      print(e.toString());
+      return "error";
+    }
   }
 }

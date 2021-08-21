@@ -16,6 +16,13 @@ class _SignInState extends State<SignInScreen> {
   TextEditingController _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    _passwordController.text = "123456";
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -71,6 +78,7 @@ class _SignInState extends State<SignInScreen> {
                                       keyboardType: TextInputType.number,
                                     ),
                                     TextFormField(
+                                        keyboardType: TextInputType.number,
                                         controller: _passwordController,
                                         decoration: InputDecoration(
                                             labelText: "Password"),
@@ -97,12 +105,12 @@ class _SignInState extends State<SignInScreen> {
                       FlatButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            Authorize()
+                            await Authorize()
                                 .signinwithPhoneEmail(
                               _numberController.text.trim(),
                               _passwordController.text.trim(),
                             )
-                                .then((value) async {
+                                .then((value) {
                               if (value == "success") {
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute<void>(

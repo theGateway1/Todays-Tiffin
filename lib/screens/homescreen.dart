@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:z_todays_tiffin/Utilities/utilities.dart';
 import 'package:z_todays_tiffin/constants/strings.dart';
 import 'package:z_todays_tiffin/models/menu_item.dart';
 import 'package:z_todays_tiffin/screens/sign_in_screen.dart';
@@ -149,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> getEta(String etaHere) async {
     // double time = double.parse(etaHere);
-    delayFactor = await otherServices().fetchDelayFactor();
+    delayFactor = await OtherServices().fetchDelayFactor();
     // double finalTime = double.parse(delayFactor)  time;
     // etaHere = finalTime.toString();
     print("Time: $etaHere:$delayFactor");
@@ -294,7 +295,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               returnSizedBox(context),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  String res = await OtherServices().requestCancellation();
+                  if (res == "success") {
+                    Utilities.showToast("Cancellation Request Successful");
+                  } else if (res == "requested") {
+                    Utilities.showToast("Already Requested");
+                  } else {
+                    Utilities.showToast("Some Error Occured");
+                  }
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith(
                       (states) => Colors.red[800]),
@@ -308,7 +318,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               returnSizedBox(context),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  String res =
+                      await OtherServices().requestChangedTiming("9:30");
+                  if (res == "success") {
+                    Utilities.showToast("Cancellation Request Successful");
+                  } else if (res == "requested") {
+                    Utilities.showToast("Already Requested");
+                  } else {
+                    Utilities.showToast("Some Error Occured");
+                  }
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith(
                       (states) => Colors.green[900]),
@@ -322,7 +342,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               returnSizedBox(context),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  String res = await OtherServices().requestClearDues();
+                  if (res == "success") {
+                    Utilities.showToast("Cancellation Request Successful");
+                  } else if (res == "requested") {
+                    Utilities.showToast("Already Requested");
+                  } else {
+                    Utilities.showToast("Some Error Occured");
+                  }
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith(
                       (states) => Colors.orange[600]),
