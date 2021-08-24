@@ -2,8 +2,8 @@
     package="com.example.z_todays_tiffin">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="z_todays_tiffin"
-        android:icon="@mipmap/ic_launcher">
+        android:label="User Tiffin"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
