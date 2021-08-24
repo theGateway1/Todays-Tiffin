@@ -107,6 +107,7 @@ MaterialStateProperty<Size> rsize(BuildContext context) {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  TimeOfDay? time;
   List<Menu> menus = [];
   String updated = "00:00";
   String finalEta = "No Info.";
@@ -342,15 +343,19 @@ class _HomeScreenState extends State<HomeScreen> {
               returnSizedBox(context),
               ElevatedButton(
                 onPressed: () async {
-                  String res =
-                      await OtherServices().requestChangedTiming("9:30");
-                  if (res == "success") {
-                    Utilities.showToast("Changed Timing Request Successful");
-                  } else if (res == "requested") {
-                    Utilities.showToast("Already Requested");
-                  } else {
-                    Utilities.showToast("Some Error Occured");
-                  }
+                  time = await showTimePicker(
+                          context: context, initialTime: TimeOfDay.now())
+                      .then((value) async {
+                    String res = await OtherServices()
+                        .requestChangedTiming(value!.format(context));
+                    if (res == "success") {
+                      Utilities.showToast("Changed Timing Request Successful");
+                    } else if (res == "requested") {
+                      Utilities.showToast("Already Requested");
+                    } else {
+                      Utilities.showToast("Some Error Occured");
+                    }
+                  });
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith(
