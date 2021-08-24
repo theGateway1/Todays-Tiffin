@@ -11,6 +11,9 @@ import 'package:z_todays_tiffin/screens/notification_screen.dart';
 import 'package:z_todays_tiffin/screens/sign_in_screen.dart';
 import 'package:z_todays_tiffin/screens/support_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:time/time.dart';
+
+import 'package:intl/intl.dart';
 import 'package:z_todays_tiffin/services/firebase_methods.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -108,10 +111,13 @@ MaterialStateProperty<Size> rsize(BuildContext context) {
 
 class _HomeScreenState extends State<HomeScreen> {
   TimeOfDay? time;
+  double finalHours = 0;
+  Duration totalMinutes = Duration(minutes: 0);
   List<Menu> menus = [];
   String updated = "00:00";
   String finalEta = "No Info.";
   String delayFactor = "00";
+  String finalMinutes = "00";
   String amOrPm = "AM";
   @override
   void initState() {
@@ -142,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
     res.forEach((element) {
       menus.add(Menu.fromMap(element));
     });
-    amOrPm = menus.first.updated.contains("AM") ? "AM" : "PM";
+    amOrPm = menus.first.eta.toString().contains("AM") ? "AM" : "PM";
     print(menus.first.updated.toString());
     finalEta = menus.first.eta;
     finalEta != "No. Info."
@@ -151,11 +157,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getEta(String etaHere) async {
-    // double time = double.parse(etaHere);
+    TimeOfDay etaTime = TimeOfDay(
+        hour: int.parse(etaHere.split(":")[0]),
+        minute: int.parse(etaHere.split(":")[1]));
+
+    finalHours = etaTime.hour.toDouble();
     delayFactor = await OtherServices().fetchDelayFactor();
-    // double finalTime = double.parse(delayFactor)  time;
-    // etaHere = finalTime.toString();
-    print("Time: $etaHere:$delayFactor");
+    double delay = double.parse(delayFactor);
+    Duration etaMinutes = Duration(minutes: etaTime.minute);
+    totalMinutes = finalHours.hours + etaMinutes + delay.minutes;
+    String tTime = totalMinutes.toString().substring(0, 8);
+    finalMinutes =
+        DateFormat.jm().format(DateTime.parse("20120227 $tTime")).toString();
+    print(finalMinutes.toString());
   }
 
   @override
@@ -307,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           menus.first.eta.toString() != "No Info."
-                              ? 'ETA: $finalEta:$delayFactor $amOrPm'
+                              ? 'ETA: ${finalMinutes.substring(0, 5)} $amOrPm'
                               : 'ETA: $finalEta',
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.bold),
