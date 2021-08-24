@@ -12,10 +12,11 @@ class PendingRequest extends StatefulWidget {
 class _PendingRequestState extends State<PendingRequest> {
   String approved = "Approved";
   String denied = "Denied";
+  int count = 0;
   late Future<List<Map<dynamic, dynamic>>> _listFuture;
   Map<dynamic, dynamic> thisMap = {};
   List<Map<dynamic, dynamic>> finalRequestList = [{}];
-  List<Map<dynamic, dynamic>> mapRequestList = [{}];
+  List<Map<dynamic, dynamic>> mapRequestList = [];
 
   Widget getText(String heading, String detail) {
     return Container(
@@ -76,59 +77,85 @@ class _PendingRequestState extends State<PendingRequest> {
                 thisMap.addAll(element);
               });
               mapRequestList.add(thisMap);
-              print(mapRequestList.toString());
+              mapRequestList.first.forEach((key, value) {
+                value.toString() == "null" ? count++ : () {};
+              });
+              print(count);
+              // print(mapRequestList.toString());
               return ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return SingleChildScrollView(
                     physics: NeverScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        Container(
-                            padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
-                            // height: 180,
-                            decoration: BoxDecoration(shape: BoxShape.circle),
-                            width: MediaQuery.of(context).size.width * 0.99,
-                            child: Card(
-                                color: Colors.orange[200],
-                                elevation: 3,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    getText("Last Updated",
-                                        mapRequestList[1]["Last Updated At"]),
-                                    mapRequestList[1]["Cancellation"] != "null"
-                                        ? getText(
-                                            "Cancellation",
-                                            mapRequestList[1]["Cancellation"] ==
-                                                    "true"
-                                                ? approved
-                                                : denied)
-                                        : Container(),
-                                    mapRequestList[1]["Clear Dues"] != "null"
-                                        ? getText(
-                                            "Clear Dues",
-                                            mapRequestList[1]["Clear Dues"] ==
-                                                    "true"
-                                                ? approved
-                                                : denied)
-                                        : Container(),
-                                    mapRequestList[1]["Changed Timing"] !=
-                                            "null"
-                                        ? getText(
-                                            "Changed Timing",
-                                            mapRequestList[1]
-                                                        ["Changed Timing"] ==
-                                                    "true"
-                                                ? approved
-                                                : denied)
-                                        : Container(),
-                                  ],
-                                ))),
-                      ],
-                    ),
+                    child: count == 3
+                        ? Container(
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                  'No Updates Yet!',
+                                  style: TextStyle(
+                                      fontSize: 20, fontFamily: 'Eraser'),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
+                                  // height: 180,
+                                  decoration:
+                                      BoxDecoration(shape: BoxShape.circle),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.99,
+                                  child: Card(
+                                      color: Colors.orange[200],
+                                      elevation: 3,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          getText(
+                                              "Last Updated",
+                                              mapRequestList[0]
+                                                  ["Last Updated At"]),
+                                          mapRequestList[0]["Cancellation"] !=
+                                                  "null"
+                                              ? getText(
+                                                  "Cancellation",
+                                                  mapRequestList[0][
+                                                              "Cancellation"] ==
+                                                          "true"
+                                                      ? approved
+                                                      : denied)
+                                              : Container(),
+                                          mapRequestList[0]["Clear Dues"] !=
+                                                  "null"
+                                              ? getText(
+                                                  "Clear Dues",
+                                                  mapRequestList[0]
+                                                              ["Clear Dues"] ==
+                                                          "true"
+                                                      ? approved
+                                                      : denied)
+                                              : Container(),
+                                          mapRequestList[0]["Changed Timing"] !=
+                                                  "null"
+                                              ? getText(
+                                                  "Changed Timing",
+                                                  mapRequestList[0][
+                                                              "Changed Timing"] ==
+                                                          "true"
+                                                      ? approved
+                                                      : denied)
+                                              : Container(),
+                                        ],
+                                      ))),
+                            ],
+                          ),
                   );
                 },
                 itemCount: 1,

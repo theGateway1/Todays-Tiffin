@@ -141,20 +141,19 @@ class OtherServices {
   }
 
   Future<String> userAcknowledge() async {
-    // try {
-    //   Map<String, String> data = {
-    //     "clearDuesResponse": "null",
-    //     "cancellationResponse": "null",
-    //     "changedTimeResponse": "null",
-    //   };
-    //   String usid = FirebaseAuth.instance.currentUser!.uid.toString();
-    //   await _firestore.collection("requests").doc(usid).update(data);
-    //   return "success";
-    // } catch (e) {
-    //   print(e.toString());
-    //   return "error";
-    // }
-    return "success";
+    try {
+      Map<String, String> data = {
+        "clearDuesResponse": "null",
+        "cancellationResponse": "null",
+        "changedTimeResponse": "null",
+      };
+      String usid = FirebaseAuth.instance.currentUser!.uid.toString();
+      await _firestore.collection("requests").doc(usid).update(data);
+      return "success";
+    } catch (e) {
+      print(e.toString());
+      return "error";
+    }
   }
 
   Future<List<Map<dynamic, dynamic>>> getRequestList() async {

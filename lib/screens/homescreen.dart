@@ -345,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   String res =
                       await OtherServices().requestChangedTiming("9:30");
                   if (res == "success") {
-                    Utilities.showToast("Cancellation Request Successful");
+                    Utilities.showToast("Changed Timing Request Successful");
                   } else if (res == "requested") {
                     Utilities.showToast("Already Requested");
                   } else {
@@ -368,7 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () async {
                   String res = await OtherServices().requestClearDues();
                   if (res == "success") {
-                    Utilities.showToast("Cancellation Request Successful");
+                    Utilities.showToast("Clear Dues Request Successful");
                   } else if (res == "requested") {
                     Utilities.showToast("Already Requested");
                   } else {
