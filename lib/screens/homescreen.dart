@@ -119,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String delayFactor = "00";
   String finalMinutes = "00";
   String amOrPm = "AM";
+  String lessThan12time = "00";
   @override
   void initState() {
     // TODO: implement initState
@@ -159,17 +160,22 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> getEta(String etaHere) async {
     TimeOfDay etaTime = TimeOfDay(
         hour: int.parse(etaHere.split(":")[0]),
-        minute: int.parse(etaHere.split(":")[1]));
+        minute: int.parse(etaHere.split(":")[1].split(" ")[0].trim()));
 
     finalHours = etaTime.hour.toDouble();
     delayFactor = await OtherServices().fetchDelayFactor();
     double delay = double.parse(delayFactor);
     Duration etaMinutes = Duration(minutes: etaTime.minute);
     totalMinutes = finalHours.hours + etaMinutes + delay.minutes;
-    String tTime = totalMinutes.toString().substring(0, 8);
-    finalMinutes =
-        DateFormat.jm().format(DateTime.parse("20120227 $tTime")).toString();
-    print(finalMinutes.toString());
+    lessThan12time = totalMinutes.toString().substring(0, 8);
+    print("HERE $lessThan12time");
+
+    if (double.parse(lessThan12time.split(":")[0]) > 12) {
+      finalMinutes = DateFormat.jm()
+          .format(DateTime.parse("20120227 $lessThan12time"))
+          .toString();
+      print(finalMinutes.toString());
+    }
   }
 
   @override
@@ -321,7 +327,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           menus.first.eta.toString() != "No Info."
-                              ? 'ETA: ${finalMinutes.substring(0, 5)} $amOrPm'
+                              ? finalMinutes.toString() == "00"
+                                  ? 'ETA: ${lessThan12time.toString().split(":00")[0]} $amOrPm '
+                                  : 'ETA: $finalMinutes'
                               : 'ETA: $finalEta',
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.bold),
