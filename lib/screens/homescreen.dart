@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:z_todays_tiffin/Utilities/utilities.dart';
 import 'package:z_todays_tiffin/constants/strings.dart';
 import 'package:z_todays_tiffin/models/menu_item.dart';
+import 'package:z_todays_tiffin/screens/notification_screen.dart';
 import 'package:z_todays_tiffin/screens/sign_in_screen.dart';
 import 'package:z_todays_tiffin/screens/support_screen.dart';
 import 'package:http/http.dart' as http;
@@ -178,6 +179,28 @@ class _HomeScreenState extends State<HomeScreen> {
               size: 27,
             ),
             padding: EdgeInsets.only(right: 20),
+          ),
+          IconButton(
+            onPressed: () async {
+              String resp = await OtherServices().checkInternet();
+              if (resp == "success") {
+                Navigator.of(context)
+                    .push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => PendingRequest(),
+                  ),
+                )
+                    .then((value) async {
+                  String response = await OtherServices().userAcknowledge();
+                  print(response);
+                });
+              }
+            },
+            icon: Icon(
+              Icons.notifications_outlined,
+              size: 27,
+            ),
+            padding: EdgeInsets.only(right: 10),
           ),
           IconButton(
             onPressed: () {

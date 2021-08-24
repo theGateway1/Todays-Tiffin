@@ -125,4 +125,62 @@ class OtherServices {
       return "error";
     }
   }
+
+  Future<String> checkInternet() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        // Utilities.showToast(e.code);
+        return "success";
+      }
+    } on SocketException catch (_) {
+      Utilities.showToast("NOT CONNECTED TO INTERNET");
+      return "error";
+    }
+    return "error";
+  }
+
+  Future<String> userAcknowledge() async {
+    // try {
+    //   Map<String, String> data = {
+    //     "clearDuesResponse": "null",
+    //     "cancellationResponse": "null",
+    //     "changedTimeResponse": "null",
+    //   };
+    //   String usid = FirebaseAuth.instance.currentUser!.uid.toString();
+    //   await _firestore.collection("requests").doc(usid).update(data);
+    //   return "success";
+    // } catch (e) {
+    //   print(e.toString());
+    //   return "error";
+    // }
+    return "success";
+  }
+
+  Future<List<Map<dynamic, dynamic>>> getRequestList() async {
+    List<Map<dynamic, dynamic>> response = [
+      {"null": "null"}
+    ];
+    try {
+      String usid = FirebaseAuth.instance.currentUser!.uid.toString();
+      QueryDocumentSnapshot doc = await findUserRequest(usid);
+      response.clear();
+      response.add({"Last Updated At": doc["lastUpdatedAt"]});
+
+      response.add({"Clear Dues": doc["clearDuesResponse"]});
+
+      response.add({"Cancellation": doc["cancellationResponse"]});
+
+      response.add({"Changed Timing": doc["changedTimeResponse"]});
+
+      print(response.toString());
+      if (response.isEmpty) {
+        response.add({"null": "null"});
+      }
+      return response;
+    } catch (e) {
+      print(e.toString());
+    }
+    return response;
+  }
 }
