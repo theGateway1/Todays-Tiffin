@@ -1,9 +1,5 @@
-# Realtime Sign Language Translator
+# Today's Tiffin
 This application is developed for a Tiffin service business. The aim was to track a large number of customers through a centralized platform. Users can view today’s menu, estimated time of arrival (ETA), request change in delivery timing, etc.
-
-## Find APK Here: <br />
-[APK](https://github.com/codedog001/sign_language_translator_realtime/files/6986923/APK.zip)
-
 
 ## Screenshots
 <p align="center">
