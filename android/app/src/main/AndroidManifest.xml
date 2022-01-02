@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.z_todays_tiffin">
+    package= "com.todays_tiffin">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="User Tiffin"
+        android:label="Today's Tiffin"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

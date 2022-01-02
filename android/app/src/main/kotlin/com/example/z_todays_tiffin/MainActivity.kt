@@ -1,4 +1,4 @@
-package com.example.z_todays_tiffin
+package com.todays_tiffin
 
 import io.flutter.embedding.android.FlutterActivity
 

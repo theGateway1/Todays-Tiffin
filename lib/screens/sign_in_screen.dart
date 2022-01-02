@@ -18,8 +18,8 @@ class _SignInState extends State<SignInScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    _numberController.text = "1";
-    _passwordController.text = "123456";
+    _numberController.text = "";
+    _passwordController.text = "";
     super.initState();
   }
 
