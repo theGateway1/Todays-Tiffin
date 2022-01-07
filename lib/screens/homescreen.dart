@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -151,6 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     amOrPm = menus.first.eta.toString().contains("AM") ? "AM" : "PM";
     print(menus.first.updated.toString());
+    print("runs");
     finalEta = menus.first.eta;
     finalEta != "No. Info."
         ? await getEta(finalEta).then((value) => setState(() {}))
